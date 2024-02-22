@@ -94,8 +94,8 @@ GroupePtr DataBase::createGroupe(std::string name) {
 std::string DataBase::playMultimedia(std::string multimediaName) {
     HeadPtr found = DataBase::findMultimedia(multimediaName);
     if (found) {
-        found->play();
-        return "Playing successfully";
+        return found->play();
+        
     } else {
         return "Something went wrong or this multimedia '" + multimediaName + "' does not exist";
     }
@@ -105,28 +105,31 @@ std::string DataBase::playMultimedia(std::string multimediaName) {
 
 void DataBase::deleteMultimedia(std::string name){
     
-    auto it =  headTable.find(name);
-
+    // Recherche de l'élément dans la headTable
+    auto it = headTable.find(name);
     HeadPtr elementToDelete;
-    if (it !=  headTable.end()) {
-        
+    if (it != headTable.end()) {
         elementToDelete = it->second;
-        
     } else {
         std::cout << "Key not found in headTable." << std::endl;
         return;
     }
-     
-    for(auto it =  groupeTable.begin(); it !=  groupeTable.end(); ++it){
+    
+    // Parcours de chaque groupe dans groupeTable
+    for(auto it = groupeTable.begin(); it != groupeTable.end(); ++it) {
         GroupePtr& groupPtr = it->second;
         auto& group = *groupPtr;
-        // Find and erase the elementToDelete from the group
-        auto elemIt = std::find(group.begin(), group.end(), elementToDelete);
-        if (elemIt != group.end()) {
-            group.erase(elemIt);
+        // Parcours de chaque élément dans le groupe
+        for(auto elemIt = group.begin(); elemIt != group.end(); ++elemIt) {
+            // Vérification de l'égalité des shared_ptr
+            if(*elemIt == elementToDelete) {
+                group.erase(elemIt);
+                break; // On a trouvé et supprimé l'élément, on peut sortir de la boucle
+            }
         }
     }
-    // Erase the elementToDelete from the headTable map
+    
+    // Suppression de l'élément de headTable
     headTable.erase(name);
 }
 bool DataBase::isValidName(const std::string& name) {

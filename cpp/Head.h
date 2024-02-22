@@ -60,7 +60,7 @@ public:
   virtual void display(std::ostream &os) const;
 
   /// @brief Virtual function to play the multimedia object.
-  virtual void play() const = 0;
+  virtual std::string play() const = 0;
 };
 
 #endif

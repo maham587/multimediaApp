@@ -31,10 +31,15 @@ public:
   };
 
   // Method to play the video
-  void play() const override {
+  std::string play() const override {
     std::string arg =
         "mpv " + this->getFilePathName() + " &"; // Command to play video
-    system(arg.data()); // Execute command to play video in background
+    int status = system(arg.data()); // Execute command to play video in background
+    if(status != 0){
+      return "Failed to play video : " + this->getMultimediaName();
+    }
+    return "Video played successfully !";
+
   };
 
   // Destructor (currently commented out)
@@ -43,5 +48,4 @@ public:
   //     purposes
   // }
 };
-
 #endif // VIDEO_H

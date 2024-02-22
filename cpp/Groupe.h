@@ -1,6 +1,6 @@
 #ifndef GROUPE_H
 #define GROUPE_H
-
+#include <memory>
 #include "Head.h" /**< Include Head.h header file. */
 #include <list>   /**< Include list header file for std::list. */
 

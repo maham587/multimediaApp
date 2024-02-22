@@ -104,3 +104,7 @@ void Film::display(std::ostream &s) const {
     }
   }
 }
+
+ std::string Film::play() const {
+  return "Can not play film media !";
+ }

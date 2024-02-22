@@ -43,6 +43,10 @@ public:
 
   /* Method to display film details */
   void display(std::ostream &s) const override;
+  std::string play() const override;
+
+  
+
 };
 
 #endif

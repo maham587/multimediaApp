@@ -4,6 +4,9 @@
 #include "DataBase.h"
 #include "Head.h"
 #include <cstdlib>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 /// @brief Class representing a photo multimedia object.
 class Photo : public Head {
@@ -53,17 +56,21 @@ public:
   /**
    * @brief Plays the photo.
    */
-  void play() const override {
-    // Build the command to execute ImageJ with the given image path
-    std::string command =
-        "imageJ -eval 'open(\"" + Head::filePathName + "\")';";
+std::string play() const override {
+  
+   //Construct the command to open the image with ImageJ in the background
+    std::string command = "imagej " + getFilePathName() + " &";
+
     // Execute the command
-    int status = system(command.c_str());
-    // Check if the command executed successfully
-    if (status != 0) {
-      std::cerr << "Failed to execute ImageJ command" << std::endl;
+    int status = std::system(command.c_str());
+
+    // Check if the command was successfully executed
+    if (status == 0) {
+        return "Image played successfully!";
+    } else {
+        return "Failed to play photo '" + getMultimediaName() + "'.";
     }
-  }
+}
 
   /// @brief Destructor.
   ~Photo() {
